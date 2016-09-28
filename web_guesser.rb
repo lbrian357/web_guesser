@@ -1,12 +1,27 @@
 require 'sinatra'
 require 'sinatra/reloader' #reloads server immediately after change in rb
 
+class Counter
+  attr_writer :count
+  @@count = 6
+  def initialize
+    @@count = 6 if @@count == 1
+    @@count -= 1
+  end
+  def self.count
+    @@count
+  end
+end
+
 number = rand(101)
 get '/' do
+  Counter.new
+  count = Counter.count
+  number = rand(101) if count == 5
   guess = params['guess'].to_i 
   message = check_guess(guess, number)
   b_color = change_color(message)
-  erb :index, :locals => {:number => number, :message => message, :b_color => b_color} #saves number to locals hash
+  erb :index, :locals => {:number => number, :message => message, :b_color => b_color, :count => count} #saves number to locals hash
 end
 
 def change_color(string)
