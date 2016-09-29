@@ -13,7 +13,15 @@ class Counter
   end
 end
 
+cheat = false
 number = rand(101)
+=begin
+get '/' do
+  'Hello world!'
+  #cheat = true
+end
+=end
+
 get '/' do
   Counter.new
   count = Counter.count
@@ -21,7 +29,12 @@ get '/' do
   guess = params['guess'].to_i 
   message = check_guess(guess, number)
   b_color = change_color(message)
-  erb :index, :locals => {:number => number, :message => message, :b_color => b_color, :count => count} #saves number to locals hash
+  if request.query_string =~ /&cheat=true/
+    cheat = true
+  else
+    cheat = false
+  end
+  erb :index, :locals => {:number => number, :message => message, :b_color => b_color, :count => count, :cheat => cheat} #saves number to locals hash
 end
 
 def change_color(string)

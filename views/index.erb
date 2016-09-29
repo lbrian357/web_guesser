@@ -10,7 +10,10 @@ body {
   </head>
 
   <body>
-    <p> <%= number %> </p>
+    <% if cheat == true %>
+
+      <p> the secret number is <%= number %></p>
+    <% end %>
     <p>You have <%= count %> guesses remaining</p>
     <p> <%= message %> </p>
     <form>
